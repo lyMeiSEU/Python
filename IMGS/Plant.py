@@ -1,5 +1,6 @@
 import requests
 import os, shutil
+import json
 
 # 导入requests_toolbelt库使用MultipartEncoder
 from requests_toolbelt import MultipartEncoder
@@ -16,18 +17,20 @@ headers = {
 
 
 if __name__=='__main__':
-    work_dir = 'C:\\Users\\83723\\Desktop\\IMGS'
+    work_dir = input('输入图片路径\n')
     for parent, dirnames, filenames in os.walk(work_dir,  followlinks=True):
         for filename in filenames:
             file_path = os.path.join(parent, filename)
             print('文件名：%s' % filename)
             print('文件完整路径：%s\n' % file_path)
-            files = {'file':(filename,open(filename,'rb'),'image/png',{})}
+            files = {'file':(filename,open(file_path,'rb'),'image/png',{})}
             m=MultipartEncoder(files)
             # 自动生成Content-Type类型和随机码
             headers['Content-Type'] = m.content_type
             # 使用data上传文件
             html = requests.post(url, headers=headers, data=m)
+            fw =open('data.json','a',encoding='utf-8')
+            json.dump(html.json(),fw,ensure_ascii=False,indent=4)#字典转成json,字典转换成字符串
             print(html.json())
 
 
