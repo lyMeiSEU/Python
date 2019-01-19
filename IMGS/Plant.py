@@ -18,7 +18,8 @@ headers = {
 
 
 if __name__=='__main__':
-    work_dir = input('输入图片路径\n')
+    work_dir = input('输入图片所在的文件夹名称\n')
+    print('遍历整个文件夹\n')
     for parent, dirnames, filenames in os.walk(work_dir,  followlinks=True):
         for filename in filenames:
             fr=open('result.txt','a',encoding='utf-8')
@@ -30,6 +31,7 @@ if __name__=='__main__':
             m=MultipartEncoder(files)
             # 自动生成Content-Type类型和随机码
             headers['Content-Type'] = m.content_type
+            print(m.content_type)
             # 使用data上传文件
             html = requests.post(url, headers=headers, data=m)
             fw =open('data.json','w',encoding='utf-8')
@@ -46,6 +48,3 @@ if __name__=='__main__':
             
             print("\n")
             #print(html.json())
-
-
-
